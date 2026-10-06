@@ -1,9 +1,9 @@
 // ==UserScript==
 // @name         B站自动宽屏居中
-// @namespace    https://github.com/your-name/bili-auto-widescreen
+// @namespace    https://github.com/tygxr/bili-auto-widescreen
 // @version      2.6.0
-// @description  进入视频页自动宽屏并将播放器垂直居中；通过状态稳定性检测避免与B站自身恢复逻辑打架，B站恢复得快就快
-// @author       your-name
+// @description  进入视频页自动宽屏并将播放器垂直居中...
+// @author       你的名字
 // @match        https://www.bilibili.com/video/*
 // @match        https://www.bilibili.com/list/*
 // @match        https://www.bilibili.com/bangumi/play/*
@@ -14,6 +14,8 @@
 // @grant        GM_registerMenuCommand
 // @grant        GM_unregisterMenuCommand
 // @run-at       document-idle
+// @downloadURL  https://raw.githubusercontent.com/tygxr/bili-auto-widescreen/main/bili-auto-widescreen.user.js
+// @updateURL    https://raw.githubusercontent.com/tygxr/bili-auto-widescreen/main/bili-auto-widescreen.user.js
 // ==/UserScript==
 
 (function () {
