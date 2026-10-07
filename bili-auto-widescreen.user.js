@@ -18,6 +18,14 @@
 // @updateURL    https://raw.githubusercontent.com/tygxr/bili-auto-widescreen/main/bili-auto-widescreen.user.js
 // ==/UserScript==
 
+/* ========== 更新日志 ==========
+
+* v2.6.1: 播放器滚出视口时跳过居中，避免评论区切回被拉回
+
+* v2.6.0: 用动态稳定性检测替代固定等待，响应更快且不打架
+
+ * ========== 更新日志结束 ========== */
+
 
 (function () {
     'use strict';
