@@ -1,13 +1,14 @@
 // ==UserScript==
 // @name         B站自动宽屏居中
 // @namespace    https://github.com/tygxr/bili-auto-widescreen
-// @version      2.6.2
-// @description  进入视频页自动宽屏并将播放器垂直居中...
-// @author       你的名字
-// @match        https://www.bilibili.com/video/*
-// @match        https://www.bilibili.com/list/*
-// @match        https://www.bilibili.com/bangumi/play/*
-// @match        https://bangumi.bilibili.com/*
+// @version      3.1.0
+// @description  自动宽屏播放并将播放器垂直居中；默认启用；用户滚动接管；小窗模式下不干预；5秒后不再重试宽屏
+// @author       DEEPSEEK
+// @icon         data:image/webp;base64,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
+// @license      MIT
+// @match        https://*.bilibili.com/video/*
+// @match        https://*.bilibili.com/list/*
+// @match        https://*.bilibili.com/bangumi/play/*
 // @grant        GM_getValue
 // @grant        GM_setValue
 // @grant        GM_addStyle
@@ -18,137 +19,342 @@
 // @updateURL    https://raw.githubusercontent.com/tygxr/bili-auto-widescreen/main/bili-auto-widescreen.user.js
 // ==/UserScript==
 
-/* ========== 更新日志 ==========
-
-* v2.6.2: 切换标签页再回来时不再关闭小窗
-
-* v2.6.1: 修复切换标签页再回来时重新居中，播放器滚出视口时跳过居中，避免评论区切回被拉回
-
-* v2.6.0: 用动态稳定性检测替代固定等待，响应更快且不打架
-
- * ========== 更新日志结束 ========== */
-
-
 (function () {
     'use strict';
 
-    // ==================== 配置项 ====================
-    const DEFAULT_CONFIG = {
-        mode: 'widescreen',
-        enabled: true,
-        playerCenterOffset: 90,
-        iconHidden: false
-    };
-    const DEFAULT_PLAYER_CENTER_OFFSET = 90;
-    const OFFSET_STEP = 1;
+    // --- 配置项 ---
+    const DEFAULT_PLAYER_CENTER_OFFSET = 90;  // 播放器垂直居中时的默认偏移量 (像素)
     const DEBOUNCE_DELAY = 200;
     const URL_CHECK_DELAY = 500;
-    const FINAL_CHECK_DELAY = 400;
+    const FINAL_CHECK_DELAY = 300;
     const SCROLL_ANIMATION_DURATION = 500;
     const OBSERVER_MAX_WAIT_TIME = 15000;
-    const SCRIPT_VERSION = '2.6.2';
+    const HEARTBEAT_VISIBLE = 2000;
+    const HEARTBEAT_HIDDEN = 3000;
 
-    const WIDE_SETTLE_DELAY = 300;
+    // ====== 自动宽屏窗口：3秒内基本确定结果，5秒后不再尝试 ======
+    const AUTO_WIDE_MAX_RETRY = 4;            // 最大重试次数
+    const AUTO_WIDE_RETRY_GAP = 1000;         // 两次尝试最小间隔
+    const AUTO_WIDE_WINDOW = 5000;            // 自动宽屏重试的总时间窗口(ms)
 
-    // ====== 动态稳定性检测参数 ======
-    const WATCH_INIT_DELAY = 300;
-    const WATCH_CHECK_INTERVAL = 400;
-    const WATCH_STABLE_THRESHOLD = 3;
-    const WATCH_MAX_WAIT = 5000;
-    const WATCH_MIN_CLICK_INTERVAL = 2000;
+    const USER_SCROLL_THRESHOLD = 150;
+    const SCRIPT_SCROLL_GRACE = 1200;
+    const OFFSET_STEP = 1;
+    const SCRIPT_VERSION = '3.1.0';
 
-    const RETRY_TIMES = 20;
-    const RETRY_INTERVAL = 2000;
-
-    // ==================== 状态变量 ====================
+    // --- 状态变量 ---
     let elements = {
         wideBtn: null,
         webFullBtn: null,
         fullBtn: null,
         player: null,
         playerContainer: null,
-        _wideObserver: null
     };
-    let isEnabled = GM_getValue('enableWideScreen', DEFAULT_CONFIG.enabled);
-    let currentMode = GM_getValue('mode', DEFAULT_CONFIG.mode);
+    let isEnabled = GM_getValue('enableWideScreen', true); // 默认启用
     let playerCenterOffset = GM_getValue('playerCenterOffset', DEFAULT_PLAYER_CENTER_OFFSET);
     let currentUrl = window.location.href;
+    let lastPathname = window.location.pathname;
     let initTimeout = null;
-    let reInitScheduled = false;
     let lastScrollTime = 0;
     let isScrolling = false;
-    let registeredCommandIds = [];
+    let currentMenuCommandText = '';
+
     let coreElementsObserver = null;
     let observerTimeoutId = null;
+
+    let heartbeatId = null;
+    let autoWideDone = false;
+    let autoWideAttempts = 0;
+    let lastAutoWideAttempt = 0;
+    let autoWideStartTime = 0;
+
+    let scriptScrollY = null;
+    let lastScriptScrollTime = 0;
+    let userScrolledAway = false;
+    let scrollWatcherAttached = false;
+    let programmaticWideClick = false;
+
+    // 设置面板
     let settingsPanel = null;
     let settingsOverlay = null;
     let savedOffsetOnOpen = null;
-    let ensureTimer = null;
 
-    // ==================== 工具函数 ====================
-    function getConfig() {
-        return {
-            mode: GM_getValue('mode', DEFAULT_CONFIG.mode),
-            enabled: GM_getValue('enableWideScreen', DEFAULT_CONFIG.enabled),
-            playerCenterOffset: GM_getValue('playerCenterOffset', DEFAULT_PLAYER_CENTER_OFFSET),
-            iconHidden: GM_getValue('iconHidden', false)
+    // --- 工具函数 ---
+
+    function debounce(func, delay) {
+        let timeoutId;
+        return function (...args) {
+            clearTimeout(timeoutId);
+            timeoutId = setTimeout(() => { func.apply(this, args); }, delay);
         };
     }
 
-    /**
-     * 检测小窗模式是否激活。
-     * 覆盖三种情况：
-     * 1. 浏览器原生画中画（document.pictureInPictureElement）
-     * 2. B站自己的小窗（.bpx-player-mini / data-screen="mini"）
-     * 3. 播放器容器被移动到悬浮小窗
-     */
-    function isMiniPlayerActive() {
-        // 浏览器原生画中画
-        if (document.pictureInPictureElement) return true;
-        if (document.webkitPictureInPictureElement) return true;
+    function scrollToPosition(topPosition, force = false) {
+        if (userScrolledAway && !force) return;
+        if (isScrolling) return;
+        const now = Date.now();
+        if (now - lastScrollTime < 100 && Math.abs(window.scrollY - topPosition) < 50) return;
+        lastScrollTime = now;
 
-        // B站自己的小窗容器
-        if (document.querySelector('.bpx-player-mini')) return true;
-        if (document.querySelector('.bilibili-player-mini')) return true;
+        scriptScrollY = topPosition;
+        lastScriptScrollTime = now;
+        if (force) userScrolledAway = false;
 
-        // 播放器容器的 data-screen 属性为 mini
-        const container = document.querySelector('.bpx-player-container');
-        if (container) {
-            const screenMode = container.getAttribute('data-screen');
-            if (screenMode === 'mini') return true;
+        if (document.hidden) {
+            window.scrollTo({ top: topPosition, behavior: 'auto' });
+            isScrolling = false;
+            return;
         }
 
-        // 播放器元素上有 mini 相关 class
+        isScrolling = true;
+        window.scrollTo({ top: topPosition, behavior: 'smooth' });
+        setTimeout(() => { isScrolling = false; }, SCROLL_ANIMATION_DURATION);
+    }
+
+    function handleUserScroll() {
+        if (Date.now() - lastScriptScrollTime < SCRIPT_SCROLL_GRACE) return;
+        if (scriptScrollY === null) { scriptScrollY = window.scrollY; return; }
+        const deviation = Math.abs(window.scrollY - scriptScrollY);
+        if (deviation > USER_SCROLL_THRESHOLD) {
+            if (!userScrolledAway) {
+                userScrolledAway = true;
+                console.log(`[B站自动宽屏居中] 用户已自行滚动 (偏离 ${Math.round(deviation)}px)，暂停自动居中/回顶。`);
+            }
+        } else if (userScrolledAway) {
+            userScrolledAway = false;
+            console.log("[B站自动宽屏居中] 用户已滚回播放器附近，恢复自动居中。");
+        }
+    }
+
+    function attachScrollWatcher() {
+        if (scrollWatcherAttached) return;
+        window.addEventListener('scroll', handleUserScroll, { passive: true });
+        scrollWatcherAttached = true;
+    }
+
+    /**
+     * 检测小窗模式是否激活。小窗模式下脚本不干预任何状态。
+     */
+    function isMiniPlayerActive() {
+        if (document.pictureInPictureElement) return true;
+        if (document.webkitPictureInPictureElement) return true;
+        if (document.querySelector('.bpx-player-mini')) return true;
+        if (document.querySelector('.bilibili-player-mini')) return true;
+        const container = document.querySelector('.bpx-player-container');
+        if (container && container.getAttribute('data-screen') === 'mini') return true;
         const player = document.querySelector('#bilibili-player');
         if (player && (player.classList.contains('mini') || player.classList.contains('bpx-player-mini'))) return true;
-
         return false;
     }
 
-    function isCurrentlyWide() {
-        if (!elements.wideBtn) return false;
+    function scrollToPlayer(forced = false) {
+        if (isMiniPlayerActive()) return;
+        if (!elements.player?.isConnected && (!cacheElements() || !elements.player)) return;
+        nextFrameOrTimeout(() => {
+            const playerRect = elements.player.getBoundingClientRect();
+            if (playerRect.height > 0) {
+                const playerTop = playerRect.top + window.scrollY;
+                const desiredScrollTop = playerTop - playerCenterOffset;
+                if (Math.abs(window.scrollY - desiredScrollTop) > 5) {
+                    scrollToPosition(desiredScrollTop, forced);
+                }
+            }
+        });
+    }
+
+    function scrollToTop(forced = false) {
+        if (window.scrollY > 0) scrollToPosition(0, forced);
+    }
+
+    function areElementsAlive() {
+        return !!(elements.player && elements.player.isConnected &&
+                  elements.wideBtn && elements.wideBtn.isConnected);
+    }
+
+    function nextFrameOrTimeout(fn) {
+        if (document.hidden) { setTimeout(fn, 0); }
+        else { requestAnimationFrame(fn); }
+    }
+
+    function refreshElements() {
+        removeListenersAndObserver();
+        if (!cacheElements()) return false;
+        setupListeners();
+        return true;
+    }
+
+    function heartbeat() {
+        if (!isTargetPage(window.location.href)) return;
+        if (!document.querySelector('#bilibili-player') ||
+            !document.querySelector('.bpx-player-ctrl-wide')) return;
+
+        if (!areElementsAlive()) {
+            console.log("[B站自动宽屏居中] heartbeat: 检测到核心元素已失效，尝试恢复。");
+            if (!refreshElements()) return;
+            console.log("[B站自动宽屏居中] heartbeat: 已重建缓存与监听器。");
+            resetAutoWideRetries();
+            setTimeout(checkAndScroll, FINAL_CHECK_DELAY);
+        }
+
+        // 自动宽屏只在时间窗口内重试（5秒后不再尝试）
+        if (isEnabled && !autoWideDone &&
+            autoWideAttempts < AUTO_WIDE_MAX_RETRY &&
+            Date.now() - autoWideStartTime < AUTO_WIDE_WINDOW) {
+            ensureWideMode();
+        }
+    }
+
+    function restartHeartbeat() {
+        stopHeartbeat();
+        const interval = document.hidden ? HEARTBEAT_HIDDEN : HEARTBEAT_VISIBLE;
+        heartbeatId = setInterval(heartbeat, interval);
+    }
+
+    function stopHeartbeat() {
+        if (heartbeatId) { clearInterval(heartbeatId); heartbeatId = null; }
+    }
+
+    function cacheElements() {
+        elements.player = document.querySelector('#bilibili-player');
+        if (!elements.player) return false;
+        elements.playerContainer = document.querySelector('.bpx-player-container') ||
+                                   document.querySelector('#bilibiliPlayer') ||
+                                   elements.player;
+        const scope = elements.playerContainer || document;
+        elements.wideBtn = scope.querySelector('.bpx-player-ctrl-wide');
+        elements.webFullBtn = scope.querySelector('.bpx-player-ctrl-web');
+        elements.fullBtn = scope.querySelector('.bpx-player-ctrl-full');
+        return !!elements.wideBtn;
+    }
+
+    function checkAndScroll(force) {
+        const forced = (force === true);
+
+        if (isMiniPlayerActive()) return;
+
+        if (!areElementsAlive()) {
+            if (!cacheElements() || !areElementsAlive()) {
+                console.error("[B站自动宽屏居中] checkAndScroll: 核心元素缓存失败。");
+                return;
+            }
+        }
+
         const isWide = elements.wideBtn.classList.contains('bpx-state-entered');
         const isWebFull = elements.webFullBtn && elements.webFullBtn.classList.contains('bpx-state-entered');
+        const isFull = !!(document.fullscreenElement || document.webkitFullscreenElement || document.mozFullScreenElement || document.msFullscreenElement);
+
+        if (userScrolledAway && !forced) return;
+
+        if (isWide && !isWebFull && !isFull) {
+            scrollToPlayer(forced);
+        } else if (!isWide && !isWebFull && !isFull) {
+            scrollToTop(forced);
+        }
+    }
+
+    const debouncedCheckAndScroll = debounce(checkAndScroll, DEBOUNCE_DELAY);
+
+    function forceCheckAndScroll() { checkAndScroll(true); }
+
+    function resetAutoWideRetries() {
+        autoWideDone = false;
+        autoWideAttempts = 0;
+        lastAutoWideAttempt = 0;
+        autoWideStartTime = Date.now();
+    }
+
+    function ensureWideMode() {
+        if (!isEnabled) return;
+        if (isMiniPlayerActive()) return;
+
+        if (!areElementsAlive() && !refreshElements()) return;
+        if (!elements.wideBtn) return;
+
+        const isCurrentlyWide = elements.wideBtn.classList.contains('bpx-state-entered');
+        const isWebFull = elements.webFullBtn && elements.webFullBtn.classList.contains('bpx-state-entered');
         const isFull = !!(document.fullscreenElement || document.webkitFullscreenElement);
-        return isWide && !isWebFull && !isFull;
+
+        if (!isCurrentlyWide && !isWebFull && !isFull) {
+            const now = Date.now();
+            if (now - autoWideStartTime > AUTO_WIDE_WINDOW) return;
+            if (now - lastAutoWideAttempt < AUTO_WIDE_RETRY_GAP) return;
+            if (autoWideAttempts >= AUTO_WIDE_MAX_RETRY) return;
+
+            lastAutoWideAttempt = now;
+            autoWideAttempts++;
+            console.log(`[B站自动宽屏居中] ensureWideMode: 尝试点击宽屏 (第 ${autoWideAttempts}/${AUTO_WIDE_MAX_RETRY} 次)。`);
+            programmaticWideClick = true;
+            try {
+                elements.wideBtn.click();
+            } finally {
+                programmaticWideClick = false;
+            }
+            setTimeout(checkAndScroll, 200);
+        } else if (isCurrentlyWide && !isWebFull && !isFull) {
+            if (!autoWideDone) {
+                autoWideDone = true;
+                console.log("[B站自动宽屏居中] ensureWideMode: 已处于宽屏模式。");
+            }
+            checkAndScroll();
+        }
     }
 
-    function isCurrentlyWebFull() {
-        if (!elements.webFullBtn) return false;
-        return elements.webFullBtn.classList.contains('bpx-state-entered');
+    function setupListeners() {
+        removeListenersAndObserver();
+
+        if (!cacheElements()) {
+            console.error("[B站自动宽屏居中] setupListeners: 核心元素查找失败。");
+            return;
+        }
+
+        elements.wideBtn.addEventListener('click', handleWideBtnClick);
+        if (elements.webFullBtn) elements.webFullBtn.addEventListener('click', forceCheckAndScroll);
+        if (elements.fullBtn) elements.fullBtn.addEventListener('click', forceCheckAndScroll);
+
+        const videoArea = elements.playerContainer?.querySelector('.bpx-player-video-area');
+        if (videoArea) videoArea.addEventListener('dblclick', forceCheckAndScroll);
+
+        document.addEventListener('fullscreenchange', forceCheckAndScroll);
+        document.addEventListener('webkitfullscreenchange', forceCheckAndScroll);
+        document.addEventListener('mozfullscreenchange', forceCheckAndScroll);
+        document.addEventListener('MSFullscreenChange', forceCheckAndScroll);
+
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'Escape') setTimeout(checkAndScroll, 150);
+        });
+        window.addEventListener('resize', debouncedCheckAndScroll);
     }
 
-    function isCurrentlyFullscreen() {
-        return !!(document.fullscreenElement || document.webkitFullscreenElement);
+    function removeListenersAndObserver() {
+        if (elements.wideBtn) elements.wideBtn.removeEventListener('click', handleWideBtnClick);
+        if (elements.webFullBtn) elements.webFullBtn.removeEventListener('click', forceCheckAndScroll);
+        if (elements.fullBtn) elements.fullBtn.removeEventListener('click', forceCheckAndScroll);
+
+        const currentContainer = elements.playerContainer || document.querySelector('.bpx-player-container') || document.querySelector('#bilibiliPlayer');
+        const videoArea = currentContainer?.querySelector('.bpx-player-video-area');
+        if (videoArea) videoArea.removeEventListener('dblclick', forceCheckAndScroll);
+
+        document.removeEventListener('fullscreenchange', forceCheckAndScroll);
+        document.removeEventListener('webkitfullscreenchange', forceCheckAndScroll);
+        document.removeEventListener('mozfullscreenchange', forceCheckAndScroll);
+        document.removeEventListener('MSFullscreenChange', forceCheckAndScroll);
+
+        window.removeEventListener('resize', debouncedCheckAndScroll);
+
+        if (coreElementsObserver) {
+            coreElementsObserver.disconnect();
+            coreElementsObserver = null;
+        }
+        if (observerTimeoutId) {
+            clearTimeout(observerTimeoutId);
+            observerTimeoutId = null;
+        }
+
+        elements = { wideBtn: null, webFullBtn: null, fullBtn: null, player: null, playerContainer: null };
     }
 
-    function isInTargetMode() {
-        if (currentMode === 'widescreen') return isCurrentlyWide();
-        if (currentMode === 'fullscreen') return isCurrentlyWebFull() || isCurrentlyFullscreen();
-        return false;
-    }
+    // ================== 设置面板 ==================
 
-    // ==================== 设置面板 ====================
     function createSettingsPanel() {
         if (settingsPanel) return;
 
@@ -202,8 +408,6 @@
             .bwsp-switch-slider::before { content: ''; position: absolute; width: 18px; height: 18px; left: 2px; top: 2px; background: #fff; border-radius: 50%; transition: transform 0.25s; box-shadow: 0 1px 3px rgba(0,0,0,0.15); }
             .bwsp-switch input:checked + .bwsp-switch-slider { background: #00a1d6; }
             .bwsp-switch input:checked + .bwsp-switch-slider::before { transform: translateX(18px); }
-            .bwsp-select { padding: 6px 10px; border: 1px solid #e3e5e7; border-radius: 6px; font-size: 13px; color: #18191c; background: #fff; cursor: pointer; outline: none; transition: border-color 0.2s; min-width: 120px; }
-            .bwsp-select:focus { border-color: #00a1d6; }
             .bwsp-num-group { display: flex; align-items: center; gap: 4px; }
             .bwsp-num-btn { width: 28px; height: 28px; border-radius: 6px; border: 1px solid #e3e5e7; background: #fff; font-size: 16px; font-weight: 600; color: #61666d; cursor: pointer; display: flex; align-items: center; justify-content: center; transition: all 0.15s; line-height: 1; padding: 0; }
             .bwsp-num-btn:hover { border-color: #00a1d6; color: #00a1d6; background: #f0f8ff; }
@@ -234,8 +438,6 @@
         settingsPanel = document.createElement('div');
         settingsPanel.id = 'bili-wide-settings-panel';
 
-        const cfg = getConfig();
-
         settingsPanel.innerHTML = `
             <div class="bwsp-header">
                 <h3>B站自动宽屏居中 设置</h3>
@@ -247,22 +449,12 @@
                 <div class="bwsp-row">
                     <div>
                         <div class="bwsp-label">启用自动模式</div>
-                        <div class="bwsp-hint">进入视频页自动切换宽屏/全屏；小窗模式下不干预</div>
+                        <div class="bwsp-hint">进入视频页自动宽屏并将播放器居中</div>
                     </div>
                     <label class="bwsp-switch">
-                        <input type="checkbox" id="bwsp-enabled" ${cfg.enabled ? 'checked' : ''}>
+                        <input type="checkbox" id="bwsp-enabled" ${isEnabled ? 'checked' : ''}>
                         <span class="bwsp-switch-slider"></span>
                     </label>
-                </div>
-                <div class="bwsp-row">
-                    <div>
-                        <div class="bwsp-label">模式选择</div>
-                        <div class="bwsp-hint">宽屏 = 网页内放大；网页全屏 = 占满浏览器窗口</div>
-                    </div>
-                    <select class="bwsp-select" id="bwsp-mode">
-                        <option value="widescreen" ${cfg.mode === 'widescreen' ? 'selected' : ''}>自动宽屏</option>
-                        <option value="fullscreen" ${cfg.mode === 'fullscreen' ? 'selected' : ''}>自动网页全屏</option>
-                    </select>
                 </div>
                 <div class="bwsp-row">
                     <div>
@@ -271,7 +463,7 @@
                     </div>
                     <div class="bwsp-num-group">
                         <button class="bwsp-num-btn" id="bwsp-offset-minus">−</button>
-                        <input type="number" class="bwsp-num-input" id="bwsp-offset-input" value="${cfg.playerCenterOffset}" min="0" max="999">
+                        <input type="number" class="bwsp-num-input" id="bwsp-offset-input" value="${playerCenterOffset}" min="0" max="999">
                         <button class="bwsp-num-btn" id="bwsp-offset-plus">+</button>
                         <span class="bwsp-px">px</span>
                     </div>
@@ -287,40 +479,60 @@
         document.getElementById('bwsp-close-btn').addEventListener('click', toggleSettingsPanel);
         settingsOverlay.addEventListener('click', toggleSettingsPanel);
 
+        document.getElementById('bwsp-enabled').addEventListener('change', (e) => {
+            isEnabled = e.target.checked;
+            GM_setValue('enableWideScreen', isEnabled);
+            updateMenuCommandText();
+            if (isEnabled) {
+                resetAutoWideRetries();
+                ensureWideMode();
+            } else {
+                if (elements.wideBtn?.isConnected && elements.wideBtn.classList.contains('bpx-state-entered')) {
+                    programmaticWideClick = true;
+                    try { elements.wideBtn.click(); } finally { programmaticWideClick = false; }
+                }
+                setTimeout(checkAndScroll, 100);
+            }
+        });
+
         document.getElementById('bwsp-offset-minus').addEventListener('click', () => {
             const input = document.getElementById('bwsp-offset-input');
             const v = parseInt(input.value) || 0;
             input.value = Math.max(0, v - OFFSET_STEP);
-            previewOffset();
+            applyOffset(input.value);
         });
         document.getElementById('bwsp-offset-plus').addEventListener('click', () => {
             const input = document.getElementById('bwsp-offset-input');
             const v = parseInt(input.value) || 0;
             input.value = Math.min(999, v + OFFSET_STEP);
-            previewOffset();
+            applyOffset(input.value);
         });
-        document.getElementById('bwsp-offset-input').addEventListener('input', previewOffset);
+        document.getElementById('bwsp-offset-input').addEventListener('input', (e) => {
+            applyOffset(e.target.value);
+        });
 
         document.getElementById('bwsp-reset-btn').addEventListener('click', () => {
-            document.getElementById('bwsp-enabled').checked = DEFAULT_CONFIG.enabled;
-            document.getElementById('bwsp-mode').value = DEFAULT_CONFIG.mode;
+            document.getElementById('bwsp-enabled').checked = true;
             document.getElementById('bwsp-offset-input').value = DEFAULT_PLAYER_CENTER_OFFSET;
-            previewOffset();
+            isEnabled = true;
+            playerCenterOffset = DEFAULT_PLAYER_CENTER_OFFSET;
+            GM_setValue('enableWideScreen', true);
+            GM_setValue('playerCenterOffset', DEFAULT_PLAYER_CENTER_OFFSET);
+            updateMenuCommandText();
+            checkAndScroll(true);
         });
 
         document.getElementById('bwsp-save-refresh-btn').addEventListener('click', () => {
-            saveSettings(true);
+            location.reload();
         });
     }
 
-    function previewOffset() {
-        const v = parseInt(document.getElementById('bwsp-offset-input').value);
+    function applyOffset(rawValue) {
+        const v = parseInt(rawValue);
         playerCenterOffset = isNaN(v) ? DEFAULT_PLAYER_CENTER_OFFSET : Math.max(0, Math.min(999, v));
-        if (!elements.player) return;
-        const playerRect = elements.player.getBoundingClientRect();
-        if (playerRect.height > 0) {
-            const playerTop = playerRect.top + window.scrollY;
-            window.scrollTo({ top: playerTop - playerCenterOffset, behavior: 'instant' });
+        GM_setValue('playerCenterOffset', playerCenterOffset);
+        if (elements.player && elements.player.isConnected) {
+            checkAndScroll(true);
         }
     }
 
@@ -329,337 +541,43 @@
         const visible = settingsPanel.classList.toggle('visible');
         settingsOverlay.classList.toggle('visible', visible);
         if (visible) {
-            const cfg = getConfig();
-            document.getElementById('bwsp-enabled').checked = cfg.enabled;
-            document.getElementById('bwsp-mode').value = cfg.mode;
-            document.getElementById('bwsp-offset-input').value = cfg.playerCenterOffset;
-            savedOffsetOnOpen = cfg.playerCenterOffset;
+            savedOffsetOnOpen = playerCenterOffset;
         } else {
-            if (savedOffsetOnOpen !== null) {
-                playerCenterOffset = savedOffsetOnOpen;
-                savedOffsetOnOpen = null;
-                if (elements.player) {
-                    const r = elements.player.getBoundingClientRect();
-                    if (r.height > 0) window.scrollTo({ top: r.top + window.scrollY - playerCenterOffset, behavior: 'instant' });
-                }
-            }
+            // 关闭面板时若不保存也不还原——这里保持"改了就生效"的语义，
+            // savedOffsetOnOpen 只用于撤销逻辑，当前实现为即时生效，不还原。
+            savedOffsetOnOpen = null;
         }
     }
 
-    function saveSettings(refresh) {
-        const newEnabled = document.getElementById('bwsp-enabled').checked;
-        const newMode = document.getElementById('bwsp-mode').value;
-        const newOffset = parseInt(document.getElementById('bwsp-offset-input').value);
-        const finalOffset = isNaN(newOffset) ? DEFAULT_PLAYER_CENTER_OFFSET : Math.max(0, Math.min(999, newOffset));
+    // ================== 菜单命令 ==================
 
-        GM_setValue('enableWideScreen', newEnabled);
-        GM_setValue('mode', newMode);
-        GM_setValue('playerCenterOffset', finalOffset);
-        isEnabled = newEnabled;
-        currentMode = newMode;
-        playerCenterOffset = finalOffset;
-        savedOffsetOnOpen = null;
-        registerMenuCommands();
+    function updateMenuCommandText() {
+        if (typeof GM_registerMenuCommand !== 'function' || typeof GM_unregisterMenuCommand !== 'function') return;
 
-        if (refresh) {
-            location.reload();
-        } else {
-            toggleSettingsPanel();
-            if (isEnabled) scheduleEnsureWide();
-            debouncedCheckAndScroll();
+        const text = `自动宽屏模式 (当前: ${isEnabled ? '✅ 开启' : '❌ 关闭'})`;
+        if (currentMenuCommandText && currentMenuCommandText !== text) {
+            try { GM_unregisterMenuCommand(currentMenuCommandText); } catch (e) {}
+        }
+        try {
+            GM_registerMenuCommand(text, toggleWideScreen);
+            currentMenuCommandText = text;
+        } catch (e) {
+            console.error("[B站自动宽屏居中] 注册菜单命令失败:", e);
         }
     }
 
-    // ==================== 滚动相关 ====================
-    function scrollToPosition(topPosition) {
-        if (isScrolling) return;
-        const now = Date.now();
-        if (now - lastScrollTime < 100 && Math.abs(window.scrollY - topPosition) < 5) return;
-        lastScrollTime = now;
-        isScrolling = true;
-        window.scrollTo({ top: topPosition, behavior: 'smooth' });
-        setTimeout(() => { isScrolling = false; }, SCROLL_ANIMATION_DURATION);
-    }
-
-    const scrollToPlayer = function () {
-        if (!elements.player && !cacheElements()) return;
-        if (!elements.player) return;
-
-        // 小窗模式下不做任何滚动
-        if (isMiniPlayerActive()) return;
-
-        requestAnimationFrame(() => {
-            const playerRect = elements.player.getBoundingClientRect();
-            if (playerRect.height <= 0) return;
-
-            const isPlayerOffscreen = playerRect.bottom < 0 || playerRect.top > window.innerHeight;
-            if (isPlayerOffscreen) return;
-
-            const playerTop = playerRect.top + window.scrollY;
-            const desiredScrollTop = playerTop - playerCenterOffset;
-            if (Math.abs(window.scrollY - desiredScrollTop) > 5) {
-                scrollToPosition(desiredScrollTop);
-            }
-        });
-    }
-
-    const scrollToTop = function () {
-        if (window.scrollY > 0) scrollToPosition(0);
-    }
-
-    const debouncedCheckAndScroll = (function () {
-        let timeoutId;
-        return function () {
-            clearTimeout(timeoutId);
-            timeoutId = setTimeout(() => {
-                // 小窗模式下不做任何操作
-                if (isMiniPlayerActive()) return;
-
-                if (!elements.player || !elements.wideBtn) {
-                    if (!cacheElements()) return;
-                }
-                if (isCurrentlyWide()) {
-                    scrollToPlayer();
-                } else if (!isCurrentlyWebFull() && !isCurrentlyFullscreen()) {
-                    scrollToTop();
-                }
-            }, DEBOUNCE_DELAY);
-        };
-    })();
-
-    // ==================== 元素缓存 ====================
-    function cacheElements() {
-        elements.player = document.querySelector('#bilibili-player');
-        if (!elements.player) return false;
-        elements.playerContainer = document.querySelector('.bpx-player-container') ||
-                                   document.querySelector('#bilibiliPlayer') ||
-                                   elements.player;
-        if (elements.playerContainer) {
-            elements.wideBtn = elements.playerContainer.querySelector('.bpx-player-ctrl-wide');
-            elements.webFullBtn = elements.playerContainer.querySelector('.bpx-player-ctrl-web');
-            elements.fullBtn = elements.playerContainer.querySelector('.bpx-player-ctrl-full');
-        } else {
-            elements.wideBtn = document.querySelector('.bpx-player-ctrl-wide');
-            elements.webFullBtn = document.querySelector('.bpx-player-ctrl-web');
-            elements.fullBtn = document.querySelector('.bpx-player-ctrl-full');
-        }
-        return !!(elements.wideBtn || elements.webFullBtn);
-    }
-
-    function observeWideState() {
-        if (!elements.wideBtn) return;
-
-        if (elements._wideObserver) {
-            elements._wideObserver.disconnect();
-            elements._wideObserver = null;
-        }
-
-        const handleWide = () => {
-            // 小窗模式下不触发居中
-            if (isMiniPlayerActive()) return;
-            if (isCurrentlyWide()) {
-                setTimeout(scrollToPlayer, WIDE_SETTLE_DELAY);
-            }
-        };
-
-        elements._wideObserver = new MutationObserver(handleWide);
-        elements._wideObserver.observe(elements.wideBtn, {
-            attributes: true,
-            attributeFilter: ['class']
-        });
-
-        setTimeout(handleWide, 200);
-    }
-
-    /**
-     * 动态稳定性检测：连续检测到宽屏按钮 class 稳定后做决策。
-     * 小窗模式下直接跳过。
-     */
-    function scheduleEnsureWide() {
-        if (!isEnabled) return;
-
-        if (ensureTimer) {
-            clearTimeout(ensureTimer);
-            ensureTimer = null;
-        }
-
-        const startTime = Date.now();
-        let lastClass = null;
-        let stableCount = 0;
-        let lastClickTime = 0;
-
-        const check = () => {
-            // 小窗模式：停止检测，不干预
-            if (isMiniPlayerActive()) {
-                console.log('[B站自动宽屏居中] 检测到小窗模式，停止自动切换');
-                ensureTimer = null;
-                return;
-            }
-
-            if (Date.now() - startTime > WATCH_MAX_WAIT) {
-                if (!isInTargetMode() && Date.now() - lastClickTime > WATCH_MIN_CLICK_INTERVAL) {
-                    if (currentMode === 'widescreen' && elements.wideBtn) {
-                        elements.wideBtn.click();
-                        setTimeout(scrollToPlayer, WIDE_SETTLE_DELAY);
-                    } else if (currentMode === 'fullscreen' && elements.webFullBtn) {
-                        elements.webFullBtn.click();
-                    }
-                } else if (isCurrentlyWide()) {
-                    setTimeout(scrollToPlayer, WIDE_SETTLE_DELAY);
-                }
-                ensureTimer = null;
-                return;
-            }
-
-            if (!elements.wideBtn || !document.contains(elements.wideBtn)) {
-                if (!cacheElements()) {
-                    ensureTimer = setTimeout(check, WATCH_CHECK_INTERVAL);
-                    return;
-                }
-                observeWideState();
-                lastClass = null;
-                stableCount = 0;
-            }
-
-            const currentClass = elements.wideBtn.className;
-
-            if (currentClass === lastClass) {
-                stableCount++;
-            } else {
-                stableCount = 0;
-                lastClass = currentClass;
-            }
-
-            if (stableCount >= WATCH_STABLE_THRESHOLD) {
-                if (isInTargetMode()) {
-                    ensureTimer = null;
-                    if (isCurrentlyWide()) setTimeout(scrollToPlayer, WIDE_SETTLE_DELAY);
-                    return;
-                }
-
-                // 点击前再检查一次小窗
-                if (isMiniPlayerActive()) {
-                    ensureTimer = null;
-                    return;
-                }
-
-                if (Date.now() - lastClickTime > WATCH_MIN_CLICK_INTERVAL) {
-                    if (currentMode === 'widescreen' && elements.wideBtn) {
-                        elements.wideBtn.click();
-                    } else if (currentMode === 'fullscreen' && elements.webFullBtn) {
-                        elements.webFullBtn.click();
-                    }
-                    lastClickTime = Date.now();
-                    lastClass = null;
-                    stableCount = 0;
-                }
-            }
-
-            ensureTimer = setTimeout(check, WATCH_CHECK_INTERVAL);
-        };
-
-        ensureTimer = setTimeout(check, WATCH_INIT_DELAY);
-    }
-
-    // ==================== 事件监听 ====================
-    function setupListeners() {
-        if (!cacheElements()) return;
-
-        if (elements.wideBtn) elements.wideBtn.addEventListener('click', debouncedCheckAndScroll);
-        if (elements.webFullBtn) elements.webFullBtn.addEventListener('click', debouncedCheckAndScroll);
-        if (elements.fullBtn) elements.fullBtn.addEventListener('click', debouncedCheckAndScroll);
-
-        const videoArea = elements.playerContainer?.querySelector('.bpx-player-video-area');
-        if (videoArea) videoArea.addEventListener('dblclick', debouncedCheckAndScroll);
-
-        document.addEventListener('fullscreenchange', debouncedCheckAndScroll);
-        document.addEventListener('webkitfullscreenchange', debouncedCheckAndScroll);
-        document.addEventListener('mozfullscreenchange', debouncedCheckAndScroll);
-        document.addEventListener('MSFullscreenChange', debouncedCheckAndScroll);
-
-        document.addEventListener('keydown', handleKeyPress);
-        window.addEventListener('resize', debouncedCheckAndScroll);
-
-        observeWideState();
-    }
-
-    function removeListenersAndObserver() {
-        if (elements.wideBtn) elements.wideBtn.removeEventListener('click', debouncedCheckAndScroll);
-        if (elements.webFullBtn) elements.webFullBtn.removeEventListener('click', debouncedCheckAndScroll);
-        if (elements.fullBtn) elements.fullBtn.removeEventListener('click', debouncedCheckAndScroll);
-
-        const currentContainer = elements.playerContainer || document.querySelector('.bpx-player-container') || document.querySelector('#bilibiliPlayer');
-        const videoArea = currentContainer?.querySelector('.bpx-player-video-area');
-        if (videoArea) videoArea.removeEventListener('dblclick', debouncedCheckAndScroll);
-
-        document.removeEventListener('fullscreenchange', debouncedCheckAndScroll);
-        document.removeEventListener('webkitfullscreenchange', debouncedCheckAndScroll);
-        document.removeEventListener('mozfullscreenchange', debouncedCheckAndScroll);
-        document.removeEventListener('MSFullscreenChange', debouncedCheckAndScroll);
-
-        document.removeEventListener('keydown', handleKeyPress);
-        window.removeEventListener('resize', debouncedCheckAndScroll);
-
-        if (coreElementsObserver) { coreElementsObserver.disconnect(); coreElementsObserver = null; }
-        if (observerTimeoutId) { clearTimeout(observerTimeoutId); observerTimeoutId = null; }
-
-        if (elements._wideObserver) {
-            elements._wideObserver.disconnect();
-            elements._wideObserver = null;
-        }
-
-        if (ensureTimer) {
-            clearTimeout(ensureTimer);
-            ensureTimer = null;
-        }
-
-        elements = { wideBtn: null, webFullBtn: null, fullBtn: null, player: null, playerContainer: null, _wideObserver: null };
-    }
-
-    function handleKeyPress(event) {
-        if (event.key === 'Escape') debouncedCheckAndScroll();
-    }
-
-    function handleVisibilityChange() {
-        if (document.visibilityState !== 'visible') return;
-        if (!isTargetPage(window.location.href)) return;
-
-        // 小窗模式下切回，什么都不做
-        if (isMiniPlayerActive()) {
-            console.log('[B站自动宽屏居中] 小窗模式下切回，不干预');
-            return;
-        }
-
-        console.log('[B站自动宽屏居中] 标签页切回前台');
-
-        if (isEnabled) {
-            scheduleEnsureWide();
-        } else {
-            setTimeout(() => {
-                if (isMiniPlayerActive()) return;
-                if (!elements.wideBtn || !document.contains(elements.wideBtn)) {
-                    cacheElements();
-                }
-                observeWideState();
-                if (isCurrentlyWide()) scrollToPlayer();
-            }, 500);
-        }
-    }
-
-    // ==================== 菜单命令 ====================
-    function registerMenuCommands() {
+    function registerMenuCommand() {
         if (typeof GM_registerMenuCommand !== 'function') return;
-        if (typeof GM_unregisterMenuCommand === 'function') {
-            registeredCommandIds.forEach(id => {
-                try { GM_unregisterMenuCommand(id); } catch (e) {}
-            });
-        }
-        registeredCommandIds = [];
 
-        registeredCommandIds.push(GM_registerMenuCommand('打开设置面板', toggleSettingsPanel));
+        updateMenuCommandText();
+        try {
+            GM_registerMenuCommand('打开设置面板', toggleSettingsPanel);
+        } catch (e) {}
 
         const iconHidden = GM_getValue('iconHidden', false);
-        registeredCommandIds.push(GM_registerMenuCommand(iconHidden ? '显示设置图标' : '隐藏设置图标', toggleIconVisibility));
+        try {
+            GM_registerMenuCommand(iconHidden ? '显示设置图标' : '隐藏设置图标', toggleIconVisibility);
+        } catch (e) {}
     }
 
     function toggleIconVisibility() {
@@ -667,61 +585,89 @@
         GM_setValue('iconHidden', newState);
         const trigger = document.getElementById('bili-wide-settings-trigger');
         if (trigger) trigger.style.display = newState ? 'none' : '';
-        registerMenuCommands();
+        registerMenuCommand();
     }
 
-    // ==================== 初始化核心逻辑 ====================
+    function toggleWideScreen() {
+        const next = !GM_getValue('enableWideScreen', true);
+        if (!window.confirm(`是否要${next ? "开启" : "关闭"}自动宽屏模式？`)) return;
+
+        isEnabled = next;
+        GM_setValue('enableWideScreen', isEnabled);
+        updateMenuCommandText();
+
+        const panelToggle = document.getElementById('bwsp-enabled');
+        if (panelToggle) panelToggle.checked = isEnabled;
+
+        if (isEnabled) {
+            resetAutoWideRetries();
+            ensureWideMode();
+        } else {
+            if (elements.wideBtn?.isConnected && elements.wideBtn.classList.contains('bpx-state-entered')) {
+                programmaticWideClick = true;
+                try { elements.wideBtn.click(); } finally { programmaticWideClick = false; }
+            }
+            setTimeout(checkAndScroll, 100);
+        }
+    }
+
+    // ================== 主逻辑 ==================
+
+    function handleWideBtnClick() {
+        const forced = !programmaticWideClick;
+        checkAndScroll(forced);
+        setTimeout(() => checkAndScroll(forced), 200);
+    }
+
+    function setupAndCheck() {
+        setupListeners();
+        if (isEnabled) ensureWideMode();
+        setTimeout(checkAndScroll, FINAL_CHECK_DELAY);
+    }
+
     function initializeScriptLogic() {
-        reInitScheduled = false;
         clearTimeout(initTimeout);
+
+        resetAutoWideRetries();
+        userScrolledAway = false;
+        scriptScrollY = null;
+
         if (coreElementsObserver) { coreElementsObserver.disconnect(); coreElementsObserver = null; }
         if (observerTimeoutId) { clearTimeout(observerTimeoutId); observerTimeoutId = null; }
 
         if (cacheElements()) {
-            setupListeners();
-            if (isEnabled) scheduleEnsureWide();
+            setupAndCheck();
             return;
         }
 
-        const observerCallback = function (mutationsList, observerInstance) {
-            if (document.querySelector('#bilibili-player') && document.querySelector('.bpx-player-ctrl-wide')) {
-                if (cacheElements()) {
-                    observerInstance.disconnect();
-                    clearTimeout(observerTimeoutId);
-                    coreElementsObserver = null;
-                    observerTimeoutId = null;
-
-                    setupListeners();
-                    if (isEnabled) scheduleEnsureWide();
-                }
+        coreElementsObserver = new MutationObserver((mutations, observer) => {
+            if (cacheElements()) {
+                observer.disconnect();
+                clearTimeout(observerTimeoutId);
+                coreElementsObserver = null;
+                observerTimeoutId = null;
+                setupAndCheck();
             }
-        };
+        });
 
-        coreElementsObserver = new MutationObserver(observerCallback);
-        let targetNodeToObserve = document.getElementById('playerWrap') || document.getElementById('mirror-vdcon') || document.getElementById('app') || document.body;
-        coreElementsObserver.observe(targetNodeToObserve, { childList: true, subtree: true });
+        const targetNode = document.getElementById('playerWrap') ||
+                           document.getElementById('mirror-vdcon') ||
+                           document.getElementById('app') ||
+                           document.body;
+        coreElementsObserver.observe(targetNode, { childList: true, subtree: true });
 
         observerTimeoutId = setTimeout(() => {
-            if (coreElementsObserver) {
-                coreElementsObserver.disconnect();
-                coreElementsObserver = null;
-            }
+            if (!coreElementsObserver) return;
+            coreElementsObserver.disconnect();
+            coreElementsObserver = null;
+            observerTimeoutId = null;
         }, OBSERVER_MAX_WAIT_TIME);
     }
 
-    // ==================== URL 变化处理 ====================
     function scheduleReInitialization(delay = URL_CHECK_DELAY) {
-        if (reInitScheduled) return;
-        reInitScheduled = true;
         clearTimeout(initTimeout);
         initTimeout = setTimeout(() => {
             removeListenersAndObserver();
-            if (typeof GM_unregisterMenuCommand === 'function') {
-                registeredCommandIds.forEach(id => {
-                    try { GM_unregisterMenuCommand(id); } catch (e) {}
-                });
-                registeredCommandIds = [];
-            }
             setTimeout(initializeScriptLogic, 100);
         }, delay);
     }
@@ -731,96 +677,84 @@
     }
 
     function handleUrlChange() {
-        requestAnimationFrame(() => {
+        nextFrameOrTimeout(() => {
             const newHref = window.location.href;
             const newPathname = window.location.pathname;
+            const previousHref = currentUrl;
 
-            let oldPathnameFromCurrentUrl = '/';
-            if (currentUrl) {
-                try {
-                    oldPathnameFromCurrentUrl = new URL(currentUrl).pathname;
-                } catch (e) {
-                    const doubleSlashIndex = currentUrl.indexOf('//');
-                    if (doubleSlashIndex !== -1) {
-                        const pathStartIndex = currentUrl.indexOf('/', doubleSlashIndex + 2);
-                        if (pathStartIndex !== -1) {
-                            const queryIndex = currentUrl.indexOf('?', pathStartIndex);
-                            const hashIndex = currentUrl.indexOf('#', pathStartIndex);
-                            let endIndex = currentUrl.length;
-                            if (queryIndex !== -1) endIndex = queryIndex;
-                            if (hashIndex !== -1 && hashIndex < endIndex) endIndex = hashIndex;
-                            oldPathnameFromCurrentUrl = currentUrl.substring(pathStartIndex, endIndex);
-                        }
-                    }
-                }
+            if (newPathname === lastPathname) {
+                currentUrl = newHref;
+                return;
             }
 
-            if (newPathname !== oldPathnameFromCurrentUrl) {
-                const previousFullUrl = currentUrl;
-                currentUrl = newHref;
+            lastPathname = newPathname;
+            currentUrl = newHref;
 
-                const isNowTarget = isTargetPage(newHref);
-                if (isNowTarget) {
-                    scheduleReInitialization();
-                } else if (isTargetPage(previousFullUrl)) {
-                    removeListenersAndObserver();
-                    if (typeof GM_unregisterMenuCommand === 'function') {
-                        registeredCommandIds.forEach(id => { try { GM_unregisterMenuCommand(id); } catch (e) {} });
-                        registeredCommandIds = [];
-                    }
-                    clearTimeout(initTimeout);
-                    reInitScheduled = false;
-                }
-            } else if (newHref !== currentUrl) {
-                currentUrl = newHref;
+            if (isTargetPage(newHref)) {
+                scheduleReInitialization();
+            } else if (isTargetPage(previousHref)) {
+                removeListenersAndObserver();
+                clearTimeout(initTimeout);
             }
         });
     }
 
-    // ==================== 主入口 ====================
     function main() {
-        isEnabled = GM_getValue('enableWideScreen', DEFAULT_CONFIG.enabled);
-        currentMode = GM_getValue('mode', DEFAULT_CONFIG.mode);
+        console.log(`[B站自动宽屏居中] 脚本开始执行。版本: ${SCRIPT_VERSION}`);
+        isEnabled = GM_getValue('enableWideScreen', true);
         playerCenterOffset = GM_getValue('playerCenterOffset', DEFAULT_PLAYER_CENTER_OFFSET);
 
+        registerMenuCommand();
+
         if (isTargetPage(currentUrl)) {
-            registerMenuCommands();
             createSettingsPanel();
         }
 
         window.addEventListener('popstate', handleUrlChange);
-        document.addEventListener('visibilitychange', handleVisibilityChange);
 
         const originalPushState = history.pushState;
-        history.pushState = function (...args) {
-            const result = originalPushState.apply(this, args);
-            window.dispatchEvent(new CustomEvent('historystatechanged'));
-            return result;
-        };
         const originalReplaceState = history.replaceState;
-        history.replaceState = function (...args) {
-            const result = originalReplaceState.apply(this, args);
-            window.dispatchEvent(new CustomEvent('historystatechanged'));
-            return result;
+        const patchedHistory = function (original) {
+            return function (...args) {
+                const result = original.apply(this, args);
+                window.dispatchEvent(new CustomEvent('historystatechanged'));
+                return result;
+            };
         };
+        history.pushState = patchedHistory(originalPushState);
+        history.replaceState = patchedHistory(originalReplaceState);
         window.addEventListener('historystatechanged', handleUrlChange);
 
         if (isTargetPage(currentUrl)) {
             initializeScriptLogic();
         }
 
+        attachScrollWatcher();
+        restartHeartbeat();
+
+        document.addEventListener('visibilitychange', () => {
+            restartHeartbeat();
+            if (document.hidden) return;
+            if (!isTargetPage(window.location.href)) return;
+            if (isEnabled && !autoWideDone && autoWideAttempts >= AUTO_WIDE_MAX_RETRY) {
+                autoWideAttempts = 0;
+                lastAutoWideAttempt = 0;
+                autoWideStartTime = Date.now();
+            }
+            handleUrlChange();
+            heartbeat();
+            if (userScrolledAway) return;
+            setTimeout(checkAndScroll, FINAL_CHECK_DELAY);
+        });
+
         window.addEventListener('unload', () => {
+            stopHeartbeat();
             removeListenersAndObserver();
             history.pushState = originalPushState;
             history.replaceState = originalReplaceState;
             window.removeEventListener('historystatechanged', handleUrlChange);
             window.removeEventListener('popstate', handleUrlChange);
-            document.removeEventListener('visibilitychange', handleVisibilityChange);
             clearTimeout(initTimeout);
-            if (typeof GM_unregisterMenuCommand === 'function') {
-                registeredCommandIds.forEach(id => { try { GM_unregisterMenuCommand(id); } catch (e) {} });
-                registeredCommandIds = [];
-            }
         });
     }
 
