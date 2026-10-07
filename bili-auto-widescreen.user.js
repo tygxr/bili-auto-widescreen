@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         B站自动宽屏居中
 // @namespace    https://github.com/tygxr/bili-auto-widescreen
-// @version      2.6.0
+// @version      2.6.1
 // @description  进入视频页自动宽屏并将播放器垂直居中...
 // @author       你的名字
 // @match        https://www.bilibili.com/video/*
@@ -17,6 +17,7 @@
 // @downloadURL  https://raw.githubusercontent.com/tygxr/bili-auto-widescreen/main/bili-auto-widescreen.user.js
 // @updateURL    https://raw.githubusercontent.com/tygxr/bili-auto-widescreen/main/bili-auto-widescreen.user.js
 // ==/UserScript==
+
 
 (function () {
     'use strict';
@@ -35,17 +36,16 @@
     const FINAL_CHECK_DELAY = 400;
     const SCROLL_ANIMATION_DURATION = 500;
     const OBSERVER_MAX_WAIT_TIME = 15000;
-    const SCRIPT_VERSION = '2.6.0';
+    const SCRIPT_VERSION = '2.6.1';
 
-    // 宽屏生效后延迟多久居中
     const WIDE_SETTLE_DELAY = 300;
 
     // ====== 动态稳定性检测参数 ======
-    const WATCH_INIT_DELAY = 300;           // 开始检查前的延迟
-    const WATCH_CHECK_INTERVAL = 400;       // 检查间隔
-    const WATCH_STABLE_THRESHOLD = 3;       // 连续稳定轮数(×400ms≈1.2s)
-    const WATCH_MAX_WAIT = 5000;            // 最长观察时间
-    const WATCH_MIN_CLICK_INTERVAL = 2000;  // 两次主动点击最小间隔
+    const WATCH_INIT_DELAY = 300;
+    const WATCH_CHECK_INTERVAL = 400;
+    const WATCH_STABLE_THRESHOLD = 3;
+    const WATCH_MAX_WAIT = 5000;
+    const WATCH_MIN_CLICK_INTERVAL = 2000;
 
     // 初次缓存失败时等待元素出现
     const RETRY_TIMES = 20;
@@ -342,17 +342,29 @@
         setTimeout(() => { isScrolling = false; }, SCROLL_ANIMATION_DURATION);
     }
 
+    /**
+     * 滚动页面使播放器垂直居中。
+     * 关键：如果播放器已经完全滚出视口（用户在评论区等位置），跳过居中，
+     * 避免切回前台或宽屏状态变化时把用户强行拉回播放器。
+     */
     const scrollToPlayer = function () {
         if (!elements.player && !cacheElements()) return;
         if (!elements.player) return;
         requestAnimationFrame(() => {
             const playerRect = elements.player.getBoundingClientRect();
-            if (playerRect.height > 0) {
-                const playerTop = playerRect.top + window.scrollY;
-                const desiredScrollTop = playerTop - playerCenterOffset;
-                if (Math.abs(window.scrollY - desiredScrollTop) > 5) {
-                    scrollToPosition(desiredScrollTop);
-                }
+            if (playerRect.height <= 0) return;
+
+            // 播放器完全在视口外 → 用户已滚离，不强行拉回
+            const isPlayerOffscreen = playerRect.bottom < 0 || playerRect.top > window.innerHeight;
+            if (isPlayerOffscreen) {
+                console.log('[B站自动宽屏居中] 播放器不在视口内，跳过居中');
+                return;
+            }
+
+            const playerTop = playerRect.top + window.scrollY;
+            const desiredScrollTop = playerTop - playerCenterOffset;
+            if (Math.abs(window.scrollY - desiredScrollTop) > 5) {
+                scrollToPosition(desiredScrollTop);
             }
         });
     }
@@ -425,7 +437,6 @@
      * 每 WATCH_CHECK_INTERVAL ms 检查一次宽屏按钮的 class。
      * 连续 WATCH_STABLE_THRESHOLD 次 class 不变，认为 B 站初始化/恢复完成，
      * 此时才做决策：是宽屏就居中；不是才主动点击（且限制点击频率）。
-     * 最长观察 WATCH_MAX_WAIT ms，超时做最后一次点击尝试。
      */
     function scheduleEnsureWide() {
         if (!isEnabled) return;
@@ -441,7 +452,6 @@
         let lastClickTime = 0;
 
         const check = () => {
-            // 超时处理
             if (Date.now() - startTime > WATCH_MAX_WAIT) {
                 if (!isInTargetMode() && Date.now() - lastClickTime > WATCH_MIN_CLICK_INTERVAL) {
                     console.log('[B站自动宽屏居中] 观察超时，最后尝试点击');
@@ -458,7 +468,6 @@
                 return;
             }
 
-            // 元素被替换则重新缓存
             if (!elements.wideBtn || !document.contains(elements.wideBtn)) {
                 if (!cacheElements()) {
                     ensureTimer = setTimeout(check, WATCH_CHECK_INTERVAL);
@@ -478,17 +487,14 @@
                 lastClass = currentClass;
             }
 
-            // 连续稳定达到阈值，可以做决策
             if (stableCount >= WATCH_STABLE_THRESHOLD) {
                 if (isInTargetMode()) {
-                    // B站已恢复或本身就是目标模式
                     console.log('[B站自动宽屏居中] 状态稳定且已是目标模式，完成');
                     ensureTimer = null;
                     if (isCurrentlyWide()) setTimeout(scrollToPlayer, WIDE_SETTLE_DELAY);
                     return;
                 }
 
-                // 稳定但不是目标模式，主动点击（限制点击频率）
                 if (Date.now() - lastClickTime > WATCH_MIN_CLICK_INTERVAL) {
                     console.log('[B站自动宽屏居中] 状态稳定但非目标模式，主动点击');
                     if (currentMode === 'widescreen' && elements.wideBtn) {
