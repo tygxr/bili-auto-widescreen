@@ -1,7 +1,7 @@
 # bili-auto-widescreen
 > b站自动宽屏居中，由deepseek生成，ai还是太好用了。
 
-版本 2.6.0 的关键改动
+### 版本 2.6.0 的关键改动
 用动态稳定性检测替代固定等待
 
 旧版 scheduleEnsureWide(3000) 是固定等 3 秒再检查。新版完全去掉固定等待，改成：
@@ -53,3 +53,14 @@
  - 把 WATCH_CHECK_INTERVAL 从 400 调到 300（检查更频繁）
 
  - 如果发现又开始闪烁，反过来把 WATCH_STABLE_THRESHOLD 调到 4 或 5
+
+
+### v2.6.1 修改要点
+
+核心改动：在 scrollToPlayer 里增加视口判断。
+
+新逻辑：如果播放器完全滚出视口（playerRect.bottom < 0 或 playerRect.top > window.innerHeight），直接跳过居中，不滚动页面。
+
+解决的问题：拉到评论区后切换标签页再回来，脚本不再强行把页面拉回播放器。
+
+其他：所有参数和逻辑保持不变。
