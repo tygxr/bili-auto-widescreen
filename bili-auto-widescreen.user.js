@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         B站自动宽屏居中
 // @namespace    https://github.com/tygxr/bili-auto-widescreen
-// @version      2.6.1
+// @version      2.6.2
 // @description  进入视频页自动宽屏并将播放器垂直居中...
 // @author       你的名字
 // @match        https://www.bilibili.com/video/*
@@ -20,7 +20,9 @@
 
 /* ========== 更新日志 ==========
 
-* v2.6.1: 播放器滚出视口时跳过居中，避免评论区切回被拉回
+* v2.6.2: 切换标签页再回来时不再关闭小窗
+
+* v2.6.1: 修复切换标签页再回来时重新居中，播放器滚出视口时跳过居中，避免评论区切回被拉回
 
 * v2.6.0: 用动态稳定性检测替代固定等待，响应更快且不打架
 
@@ -44,7 +46,7 @@
     const FINAL_CHECK_DELAY = 400;
     const SCROLL_ANIMATION_DURATION = 500;
     const OBSERVER_MAX_WAIT_TIME = 15000;
-    const SCRIPT_VERSION = '2.6.1';
+    const SCRIPT_VERSION = '2.6.2';
 
     const WIDE_SETTLE_DELAY = 300;
 
@@ -55,7 +57,6 @@
     const WATCH_MAX_WAIT = 5000;
     const WATCH_MIN_CLICK_INTERVAL = 2000;
 
-    // 初次缓存失败时等待元素出现
     const RETRY_TIMES = 20;
     const RETRY_INTERVAL = 2000;
 
@@ -92,6 +93,36 @@
             playerCenterOffset: GM_getValue('playerCenterOffset', DEFAULT_PLAYER_CENTER_OFFSET),
             iconHidden: GM_getValue('iconHidden', false)
         };
+    }
+
+    /**
+     * 检测小窗模式是否激活。
+     * 覆盖三种情况：
+     * 1. 浏览器原生画中画（document.pictureInPictureElement）
+     * 2. B站自己的小窗（.bpx-player-mini / data-screen="mini"）
+     * 3. 播放器容器被移动到悬浮小窗
+     */
+    function isMiniPlayerActive() {
+        // 浏览器原生画中画
+        if (document.pictureInPictureElement) return true;
+        if (document.webkitPictureInPictureElement) return true;
+
+        // B站自己的小窗容器
+        if (document.querySelector('.bpx-player-mini')) return true;
+        if (document.querySelector('.bilibili-player-mini')) return true;
+
+        // 播放器容器的 data-screen 属性为 mini
+        const container = document.querySelector('.bpx-player-container');
+        if (container) {
+            const screenMode = container.getAttribute('data-screen');
+            if (screenMode === 'mini') return true;
+        }
+
+        // 播放器元素上有 mini 相关 class
+        const player = document.querySelector('#bilibili-player');
+        if (player && (player.classList.contains('mini') || player.classList.contains('bpx-player-mini'))) return true;
+
+        return false;
     }
 
     function isCurrentlyWide() {
@@ -216,7 +247,7 @@
                 <div class="bwsp-row">
                     <div>
                         <div class="bwsp-label">启用自动模式</div>
-                        <div class="bwsp-hint">进入视频页自动切换宽屏/全屏（动态检测B站状态，不打架）</div>
+                        <div class="bwsp-hint">进入视频页自动切换宽屏/全屏；小窗模式下不干预</div>
                     </div>
                     <label class="bwsp-switch">
                         <input type="checkbox" id="bwsp-enabled" ${cfg.enabled ? 'checked' : ''}>
@@ -350,24 +381,19 @@
         setTimeout(() => { isScrolling = false; }, SCROLL_ANIMATION_DURATION);
     }
 
-    /**
-     * 滚动页面使播放器垂直居中。
-     * 关键：如果播放器已经完全滚出视口（用户在评论区等位置），跳过居中，
-     * 避免切回前台或宽屏状态变化时把用户强行拉回播放器。
-     */
     const scrollToPlayer = function () {
         if (!elements.player && !cacheElements()) return;
         if (!elements.player) return;
+
+        // 小窗模式下不做任何滚动
+        if (isMiniPlayerActive()) return;
+
         requestAnimationFrame(() => {
             const playerRect = elements.player.getBoundingClientRect();
             if (playerRect.height <= 0) return;
 
-            // 播放器完全在视口外 → 用户已滚离，不强行拉回
             const isPlayerOffscreen = playerRect.bottom < 0 || playerRect.top > window.innerHeight;
-            if (isPlayerOffscreen) {
-                console.log('[B站自动宽屏居中] 播放器不在视口内，跳过居中');
-                return;
-            }
+            if (isPlayerOffscreen) return;
 
             const playerTop = playerRect.top + window.scrollY;
             const desiredScrollTop = playerTop - playerCenterOffset;
@@ -386,6 +412,9 @@
         return function () {
             clearTimeout(timeoutId);
             timeoutId = setTimeout(() => {
+                // 小窗模式下不做任何操作
+                if (isMiniPlayerActive()) return;
+
                 if (!elements.player || !elements.wideBtn) {
                     if (!cacheElements()) return;
                 }
@@ -426,6 +455,8 @@
         }
 
         const handleWide = () => {
+            // 小窗模式下不触发居中
+            if (isMiniPlayerActive()) return;
             if (isCurrentlyWide()) {
                 setTimeout(scrollToPlayer, WIDE_SETTLE_DELAY);
             }
@@ -441,10 +472,8 @@
     }
 
     /**
-     * 动态稳定性检测：
-     * 每 WATCH_CHECK_INTERVAL ms 检查一次宽屏按钮的 class。
-     * 连续 WATCH_STABLE_THRESHOLD 次 class 不变，认为 B 站初始化/恢复完成，
-     * 此时才做决策：是宽屏就居中；不是才主动点击（且限制点击频率）。
+     * 动态稳定性检测：连续检测到宽屏按钮 class 稳定后做决策。
+     * 小窗模式下直接跳过。
      */
     function scheduleEnsureWide() {
         if (!isEnabled) return;
@@ -460,9 +489,15 @@
         let lastClickTime = 0;
 
         const check = () => {
+            // 小窗模式：停止检测，不干预
+            if (isMiniPlayerActive()) {
+                console.log('[B站自动宽屏居中] 检测到小窗模式，停止自动切换');
+                ensureTimer = null;
+                return;
+            }
+
             if (Date.now() - startTime > WATCH_MAX_WAIT) {
                 if (!isInTargetMode() && Date.now() - lastClickTime > WATCH_MIN_CLICK_INTERVAL) {
-                    console.log('[B站自动宽屏居中] 观察超时，最后尝试点击');
                     if (currentMode === 'widescreen' && elements.wideBtn) {
                         elements.wideBtn.click();
                         setTimeout(scrollToPlayer, WIDE_SETTLE_DELAY);
@@ -497,14 +532,18 @@
 
             if (stableCount >= WATCH_STABLE_THRESHOLD) {
                 if (isInTargetMode()) {
-                    console.log('[B站自动宽屏居中] 状态稳定且已是目标模式，完成');
                     ensureTimer = null;
                     if (isCurrentlyWide()) setTimeout(scrollToPlayer, WIDE_SETTLE_DELAY);
                     return;
                 }
 
+                // 点击前再检查一次小窗
+                if (isMiniPlayerActive()) {
+                    ensureTimer = null;
+                    return;
+                }
+
                 if (Date.now() - lastClickTime > WATCH_MIN_CLICK_INTERVAL) {
-                    console.log('[B站自动宽屏居中] 状态稳定但非目标模式，主动点击');
                     if (currentMode === 'widescreen' && elements.wideBtn) {
                         elements.wideBtn.click();
                     } else if (currentMode === 'fullscreen' && elements.webFullBtn) {
@@ -524,13 +563,7 @@
 
     // ==================== 事件监听 ====================
     function setupListeners() {
-        removeListenersAndObserver();
-        console.log("[B站自动宽屏居中] setupListeners: 开始设置事件监听器。");
-
-        if (!cacheElements()) {
-            console.error("[B站自动宽屏居中] setupListeners: 核心元素查找失败。");
-            return;
-        }
+        if (!cacheElements()) return;
 
         if (elements.wideBtn) elements.wideBtn.addEventListener('click', debouncedCheckAndScroll);
         if (elements.webFullBtn) elements.webFullBtn.addEventListener('click', debouncedCheckAndScroll);
@@ -548,7 +581,6 @@
         window.addEventListener('resize', debouncedCheckAndScroll);
 
         observeWideState();
-        console.log("[B站自动宽屏居中] setupListeners: 完成。");
     }
 
     function removeListenersAndObserver() {
@@ -592,12 +624,19 @@
         if (document.visibilityState !== 'visible') return;
         if (!isTargetPage(window.location.href)) return;
 
+        // 小窗模式下切回，什么都不做
+        if (isMiniPlayerActive()) {
+            console.log('[B站自动宽屏居中] 小窗模式下切回，不干预');
+            return;
+        }
+
         console.log('[B站自动宽屏居中] 标签页切回前台');
 
         if (isEnabled) {
             scheduleEnsureWide();
         } else {
             setTimeout(() => {
+                if (isMiniPlayerActive()) return;
                 if (!elements.wideBtn || !document.contains(elements.wideBtn)) {
                     cacheElements();
                 }
@@ -638,21 +677,15 @@
         if (coreElementsObserver) { coreElementsObserver.disconnect(); coreElementsObserver = null; }
         if (observerTimeoutId) { clearTimeout(observerTimeoutId); observerTimeoutId = null; }
 
-        console.log(`[B站自动宽屏居中] initializeScriptLogic (v${SCRIPT_VERSION})`);
-
         if (cacheElements()) {
-            console.log("[B站自动宽屏居中] 核心元素已缓存。");
             setupListeners();
             if (isEnabled) scheduleEnsureWide();
             return;
         }
 
-        console.log("[B站自动宽屏居中] 初次缓存失败，等待元素出现...");
-
         const observerCallback = function (mutationsList, observerInstance) {
             if (document.querySelector('#bilibili-player') && document.querySelector('.bpx-player-ctrl-wide')) {
                 if (cacheElements()) {
-                    console.log("[B站自动宽屏居中] MutationObserver: 核心元素已缓存。");
                     observerInstance.disconnect();
                     clearTimeout(observerTimeoutId);
                     coreElementsObserver = null;
@@ -670,7 +703,6 @@
 
         observerTimeoutId = setTimeout(() => {
             if (coreElementsObserver) {
-                console.error(`[B站自动宽屏居中] MutationObserver 超时 (${OBSERVER_MAX_WAIT_TIME}ms)`);
                 coreElementsObserver.disconnect();
                 coreElementsObserver = null;
             }
@@ -724,7 +756,6 @@
             }
 
             if (newPathname !== oldPathnameFromCurrentUrl) {
-                console.log(`[B站自动宽屏居中] Pathname 变化: "${oldPathnameFromCurrentUrl}" -> "${newPathname}"`);
                 const previousFullUrl = currentUrl;
                 currentUrl = newHref;
 
@@ -748,7 +779,6 @@
 
     // ==================== 主入口 ====================
     function main() {
-        console.log(`[B站自动宽屏居中] 脚本开始执行。版本: ${SCRIPT_VERSION}`);
         isEnabled = GM_getValue('enableWideScreen', DEFAULT_CONFIG.enabled);
         currentMode = GM_getValue('mode', DEFAULT_CONFIG.mode);
         playerCenterOffset = GM_getValue('playerCenterOffset', DEFAULT_PLAYER_CENTER_OFFSET);
