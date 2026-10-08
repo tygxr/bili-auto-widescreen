@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         B站自动宽屏居中
 // @namespace    https://github.com/tygxr/bili-auto-widescreen
-// @version      3.1.0
+// @version      3.1.1
 // @description  自动宽屏播放并将播放器垂直居中；默认启用；用户滚动接管；小窗模式下不干预；5秒后不再重试宽屏
 // @author       DEEPSEEK
 // @icon         data:image/webp;base64,UklGRoAHAABXRUJQVlA4WAoAAAAQAAAAPwAAPwAAQUxQSPgCAAABoETbtmm7mrFt27b9EKdm27Zt27Zt2za+f+yL55tZOHvvu84JixExAfjZjGlfTHvyrX98fVBMO6L1uvJ4S1Eb8rwlyQ12LCHJz0Xl1lM5SW4olXvFoj1Wsb1UY6r/iyN2TRMRIFPOq3kUQwrdNXyfTyLr/9QOg3iMHRo+TOlfohvUHokjh0TXNDwWy59ou6h9kAJ2ZvhLw2X+zKT2VU6Ix0qYMGGcAJeGQxIa96A2pEHshAkTxhYoN/HE0/9fvHjxZ6iOL4ypD//jxYsX/z87PbWyWeXj/AbPBRmM9fHbnB5dtYzf7KYYlrH8hmcDqPD1W2Iwop2i1vfhnWPfR+mux6ryVRU2vlDK5I5NkX+EW8U6S6gMCYLDK3xRrX+sGgvH91P9EaKIyOW89B5FGJVvkzgvzt8K7etvIO6fv69KLpuXXSb5hDW1HRHgJp8mlYhxkGRHBwS4SbKaREYfSXa0LcBNkuHZAaSrVkNbPSeABH9a2NGmUm5a2wKo8ZaG3g4AqrotbGjPOpIMbwEAl2j8NjGACh8sN+xZr2hmuWX2OSmAcoqb9pT20NoaQKMIo+EAqrhobWwPgjyWsGwAirRqo21dEUCCP2jtDJsQ5CHJahDM6LN0hm0I8pDPk0nEPEyyMxyA0isX5oRoisnr68ER5qW37q2v89ch1V0k231D1V20tvtmqruobveNFHZRX//bmEVruOW4fW9FhltaV/WQ3CIR52+VVxGRRyLlKX7sAAT+ywf5JDJ6FaEPFJwsgeiFMwBAsiLxITmEymcLVeENJOwN8KhWV/ApGDmrdIZ0psn8S5zONEOJyWFUB+OoiqTbZfp6fRpFkpSKRAteuEzd1F+KgVJROn8vxAXQ8cX7SdGBaNsoXQ3AUCnWBnJEkQwEilF6EqxzpLoD5UmyPdBAakU0BQaFy1QFElwhX2YC8sn4xkBfaq9PYGcMAKmGTcgFAPMkjlSEcdGh++48N749Ph6MYwy4/tz47oGRJSEY2xiCsY2j4ScSVlA4IGIEAABwFgCdASpAAEAAPpE+mEelo6KhLhbbiLASCWwAuOGu1T3lfb+Mh4B8AcHKZjsWxj+or8if1z1MOkB5gP12/ab3kvQv6Bn9J/xHWjegB4Ufwef2z/pelD1//AgPqTa/GBSS+RiaJ4vvp32BfKO9Z3oAIkxPavTlrVQ1N1ZxzZ3aBLZNbyO1aqPXINUPzL5gULV9FJ30hIWvWxqZLB4ZCec+2pgpYwIgru/CpSsqCzKGHFeLkx/c9Y89N4G1QAD++eCAWtuQllsHiLFU/Zn7/GHq6jeiTak/+qtKPibeV8Cld/Wc5LjwzuxwhfGBduKOVdE/4a90P+/4GaaxzqWIGO0TmtVLUMkF/tyHtdfBLgSVMdY+e/Jv1titMm8N0z/5fow0ypwaza2uSeCrVj/uorktUlX5GgnrQeLNdI/m2x/uK4thVOjMyBc1mwKUhEsl9HEHKtH0rNGaa67ayCK4CbB0Ed42RJ0//UrJRRtk1gyJyP9k3+gqvgB8HEZb1IP4CoFrYLcHSqg9lhiNVllGFlUIArJtT4wgg2Gnxe6CmddjwMzMjw/Hx161I6AWBRr85Hwv35OusmGGrB3unN5Y2JX64J14ebJotu8F5TNFwzdWWeDJfJMKCs+lcZcH+QHOBKOEsvDI7yJvux//17//2IQ/+2JpkJFbfwwBoFP+/riAGPKoQXIv0swrGftLXLfEQCNE874QhGTqDer3GEasD2BS04lgYpRNeJCbwk0cWJHFGMnlEaVAWmlqevQZQ3H/TY1YUDnU8PWTbKT4DrsjGn9fbhIqva+gB62r6vKZ7mXt9Y3OFhWRVD3LZaEJKsxY43/9YT7NtrxLSmUtxCcOwTgZk4ukKZgoarpmN/Ot+NYEiiMGVsSUUotNXrB15yd+vbDroBWLnh+jf2uaBTXuz82p+2VwaVjqwa+5F6d7LGqBtuTOVbkEenXGGQUyqGNST2sFvEU7B/XsAC8WZ9DqzQ9bYpl/4nHerU+Ziy6LJAeUmXEnGMjp54AHpcDybMZ3BhfnwDbomkTDHY+VCibUk2m6m3/ClNxgLXh10QU4+5Tf/+gmsCbAcP5EMYqRNDpG35UC/x2+OB37jfGt+dXhCIIKU8TvRrMm6oGr+1AeMq+VcrfjSwIDTkhNdYB18LtzxQTPf6CCIqUPeRyPWk5X05a8uabqgtenNw1kYGmkIxW65275/mpgr1Aw+396rFrhbH5pcZWPVKXRrQEEHueiZ/ImZDHbIqe874gnu/IiXeIsF1yGhCzqrM6XEbdgSDfNhXGs4HNDqBZZtSPy0TjgcU4zWb5SHWq7zntDHXOjv6DBCDtqxvgQsD5qAuhCiigZib18bHeFVy0hlBPe4FH/qCxMRt1CUNx3J6PanmbOezwy+HLndcfdwFFm0pC9D5Gz9Saa6rV2XYjhs4M+vyJ0QXQLsa0WU7z4gisNGk6SalzabgiIbWGzEcCfB4mgP+J5H2nhB4+RNWSLf40bn+/YCrr8gAA=
@@ -9,6 +9,7 @@
 // @match        https://*.bilibili.com/video/*
 // @match        https://*.bilibili.com/list/*
 // @match        https://*.bilibili.com/bangumi/play/*
+// @match        https://*.bilibili.com/festival/*
 // @grant        GM_getValue
 // @grant        GM_setValue
 // @grant        GM_addStyle
@@ -40,7 +41,7 @@
     const USER_SCROLL_THRESHOLD = 150;
     const SCRIPT_SCROLL_GRACE = 1200;
     const OFFSET_STEP = 1;
-    const SCRIPT_VERSION = '3.1.0';
+    const SCRIPT_VERSION = '3.1.1';
 
     // --- 状态变量 ---
     let elements = {
@@ -673,7 +674,7 @@
     }
 
     function isTargetPage(url) {
-        return /\/(video|list|bangumi\/play)\//.test(url);
+        return /\/(video|list|bangumi\/play|festival)\//.test(url);
     }
 
     function handleUrlChange() {
