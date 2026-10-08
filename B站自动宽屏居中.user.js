@@ -16,8 +16,8 @@
 // @grant        GM_registerMenuCommand
 // @grant        GM_unregisterMenuCommand
 // @run-at       document-idle
-// @downloadURL https://greasyfork.org/zh-CN/scripts/492413-b%E7%AB%99%E8%87%AA%E5%8A%A8%E5%AE%BD%E5%B1%8F%E5%B1%85%E4%B8%AD.user.js
-// @updateURL https://greasyfork.org/zh-CN/scripts/492413-b%E7%AB%99%E8%87%AA%E5%8A%A8%E5%AE%BD%E5%B1%8F%E5%B1%85%E4%B8%AD.meta.js
+// @downloadURL  https://raw.githubusercontent.com/tygxr/bili-auto-widescreen/refs/heads/main/B%E7%AB%99%E8%87%AA%E5%8A%A8%E5%AE%BD%E5%B1%8F%E5%B1%85%E4%B8%AD.user.js
+// @updateURL    https://raw.githubusercontent.com/tygxr/bili-auto-widescreen/refs/heads/main/B%E7%AB%99%E8%87%AA%E5%8A%A8%E5%AE%BD%E5%B1%8F%E5%B1%85%E4%B8%AD.user.js
 // ==/UserScript==
 
 
